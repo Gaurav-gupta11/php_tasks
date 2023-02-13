@@ -14,6 +14,7 @@
   Full name: <input type="text" name="fullName" value="<?php echo $fullName; ?>" disabled><br><br>
   Select image:<input type="file" name="img" accept="image/*"><br><br>
   Marks:<br><textarea name="marks" rows="5" cols="30"></textarea><br><br>
+  Phone Number: <input type="text" value="+91" name="number"  maxlength="13"><br><br>
   <input type="submit" value="Submit">
     
 </form>
@@ -24,16 +25,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $fullName = $firstName . " " . $lastName;
   $file_name= $_FILES['img']['name'];
   $file_tmp = $_FILES['img']['tmp_name'];
-  move_uploaded_file($file_tmp,"upload-images".$file_name);
-  echo "<p><img src='upload-images$file_name' alt='img'></p>";
-  echo "Hello " . $fullName;
-
-  
   $marks = $_POST['marks'];
-
+  $number = $_POST['number'];
   $marks_array = explode("\n", $marks);
 
-  
+  move_uploaded_file($file_tmp,"upload-images".$file_name);
+  echo "<p><img src='upload-images$file_name' alt='img'></p>";
+  echo "Hello " . $fullName . "<br>";
+  if (preg_match("/^\+91[0-9]{10}$/", $number)) {
+    echo "Your phone number" . $number . "<br>";
+  } else {
+
+    echo "Invalid phone number. Please enter a valid Indian phone number in the format +91xxxxxxxxxx.";
+  }
+
   ?>
   <table border="1">
       <tr>
