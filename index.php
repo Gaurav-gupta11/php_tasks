@@ -7,6 +7,16 @@
     <title>Document</title>
 </head>
 <body>
+
+<form method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+  First Name: <input type="text" name="firstName" pattern="[a-zA-Z]{1,}" required><br><br>
+  Last Name: <input type="text" name="lastName" pattern="[a-zA-Z]{1,}" required><br><br>
+  Full name: <input type="text" name="fullName" value="<?php echo $fullName; ?>" disabled><br><br>
+  Select image:<input type="file" name="img" accept="image/*"><br><br>
+  Marks:<br><textarea name="marks" rows="5" cols="30"></textarea><br><br>
+  <input type="submit" value="Submit">
+    
+</form>
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $firstName = $_POST["firstName"];
@@ -14,23 +24,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $fullName = $firstName . " " . $lastName;
   $file_name= $_FILES['img']['name'];
   $file_tmp = $_FILES['img']['tmp_name'];
-  move_uploaded_file($file_tmp,"upload-images/$file_name");
-}
+  move_uploaded_file($file_tmp,"upload-images".$file_name);
+  echo "<p><img src='upload-images$file_name' alt='img'></p>";
+  echo "Hello " . $fullName;
 
-?>
+  
+  $marks = $_POST['marks'];
 
-<form method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-  First Name: <input type="text" name="firstName" pattern="[a-zA-Z]{1,}" required><br><br>
-  Last Name: <input type="text" name="lastName" pattern="[a-zA-Z]{1,}" required><br><br>
-  Full name: <input type="text" name="fullName" value="<?php echo $fullName; ?>" disabled><br><br>
-  Select image:<input type="file" name="img" accept="image/*"><br><br>
-  <input type="submit" value="Submit">
-</form>
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    echo "<p><img src='upload-images/$file_name' alt='img'></p>";
-    echo "Hello " . $fullName;
-  }
+  $marks_array = explode("\n", $marks);
+
+  
   ?>
+  <table border="1">
+      <tr>
+        <th>Subject</th>
+        <th>Marks</th>
+      </tr>
+  <?php    
+  foreach ($marks_array as $mark) {
+  $subject_mark = explode("|", $mark);
+  ?>
+  <tr>
+    <td><?php echo $subject_mark[0]; ?></td>
+    <td><?php echo $subject_mark[1]; ?></td>
+  </tr>
+<?php
+}
+?>
+</table>
+<?php
+}
+?>
 </body>
 </html>
