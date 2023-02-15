@@ -1,19 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form method="post" enctype="multipart/form-data" action="" target="_self">
-        First Name: <input type="text" name="firstName" pattern="[a-zA-Z]{1,}" required><br><br>
-        Last Name: <input type="text" name="lastName" pattern="[a-zA-Z]{1,}" required><br><br>
-        Full name: <input type="text" name="fullName" value= "<?php echo $fullName; ?>" disabled><br><br>
-        <input type="submit" value="submit"><br><br>
-      
-      </form>
-      <?php include 'logic.php'; ?>
-</body>
+<html>
+  <head>
+    <title>Form Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="index.js"></script>
+  </head>
+  <body>
+    <form method="post" >
+      <label for="first-name">First Name:</label>
+      <input type="text" id="first-name" name="first-name" required>
+      <br>
+      <label for="last-name">Last Name:</label>
+      <input type="text" id="last-name" name="last-name" required>
+      <br>
+      <label for="full-name">Full Name:</label>
+      <input type="text" id="full-name" name="full-name" disabled>
+      <br>
+      <button type="submit">Submit</button>
+    </form>
+    <?php include 'logic.php'; ?>
+  </body>
 </html>
