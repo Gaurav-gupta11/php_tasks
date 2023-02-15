@@ -2,11 +2,16 @@
 <html>
   <head>
     <title>Form Example</title>
+    <!--include style.css for styling-->
+    <link rel="stylesheet" href="style.css">
+    <!-- include jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- include index.js for scripting -->
     <script src="index.js"></script>
   </head>
   <body>
-    <form method="post" >
+    <!-- create a form with two input fields for first and last name, and a button to submit the form -->
+    <form method="post">
       <label for="first-name">First Name:</label>
       <input type="text" id="first-name" name="first-name" required>
       <br>
@@ -18,6 +23,9 @@
       <br>
       <button type="submit">Submit</button>
     </form>
-    <?php include 'logic.php'; ?>
+    <?php
+    // include logic.php to handle form submission 
+    include 'logic.php';
+    ?>
   </body>
 </html>
