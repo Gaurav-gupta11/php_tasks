@@ -1,49 +1,71 @@
 <?php
-class form{
-  public $first,$last,$full,$filename,$filetemp;
-    
-  public function __construct($firstName,$lastName,$file_name,$file_temp){
-    $this->first=$firstName;
-    $this->last=$lastName;
-    $this->filename=$file_name;
-    $this->filetemp=$file_temp;
+// Define a class to represent the form
+class Form {
+  public $first, $last, $full, $filename, $filetemp;
+  //constructor to input data
+  public function __construct($firstName, $lastName, $file_name, $file_temp) {
+    $this->first = $firstName;
+    $this->last = $lastName;
+    $this->filename = $file_name;
+    $this->filetemp = $file_temp;
   }
-  public function showfullname(){
+
+  // Function to display the full name
+  public function showFullName() {
     $message = "Hello " . $this->full = $this->first . " " . $this->last;
     echo $message;
   }
 
-  public function uploadimage($file_name){
-    move_uploaded_file($this->filetemp,"upload-images/$this->filename");
-    echo "<p><img src='upload-images/$file_name' alt='img'></p>";
+  // Function to upload the image
+  public function uploadImage() {
+    // Validate if image is selected and not empty
+    if (!empty($this->filename) && !empty($this->filetemp)) {
+      move_uploaded_file($this->filetemp, "upload-images/$this->filename");
+    }
   }
-  public function showmarks($marks){
+
+  public function splitMarks($marks){
     $pattern = "/[\n\|]+/";
     $subject_mark = preg_split($pattern, $marks);
     return $subject_mark;
   }
 }
  
+//Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  //insert the value
   $firstName = $_POST["first-name"];
   $lastName = $_POST["last-name"];
-  $file_name= $_FILES['img']['name'];
+  $file_name = $_FILES['img']['name'];
   $file_tmp = $_FILES['img']['tmp_name'];
   $marks = $_POST['marks'];
-  $name = "/^[a-zA-Z]+$/";
+  // make variable namePattern to match only alphabets
+  $namePattern = "/^[a-zA-Z]+$/";
 
-  if (preg_match($name, $firstName) && preg_match($name, $lastName)) {
-    $task = new form($firstName,$lastName,$file_name,$file_tmp);
-    $task->uploadimage($file_name);
-    $task->showfullname();   
-    if (!empty($marks)) {  
-      $subject_mark = $task->showmarks($marks);
-      $j=count($subject_mark);
-    } else {
-      echo "Please enter marks in the textarea.";
-    }
-  } 
-  else {
-    echo "Invalid input. Please enter only alphabets for first name and last name.";
+  // make variable namePattern to match only alphabets
+  $marksPattern = '/^[a-zA-Z]+\|[0-9]+$/m';
+
+  // check if the first name and last name and marks match the pattern  
+  if (preg_match($namePattern, $firstName) && preg_match($namePattern, $lastName) && preg_match($marksPattern,$marks)) {
+
+    // Create a new form instance
+    $task = new Form($firstName,$lastName,$file_name,$file_tmp);
+    
+    // if they match, upload image using the method
+    $task->uploadImage($file_name);
+    
+    // print the image
+     echo "<p><img src='upload-images/$file_name' alt='img'></p>";
+    
+    // if they match, show the full name using the method
+    $task->showFullName();   
+    $subject_mark = $task->splitMarks($marks);
+    $j=count($subject_mark);
+  }
+  else 
+  { 
+    // if they dont match, show the error message using the method
+    echo "Invalid input. Please enter only alphabets for first name and last name or provide marks in specified format";
   }
 }
+
