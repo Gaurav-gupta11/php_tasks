@@ -27,6 +27,7 @@ body{
  }
  table {
     border: 1px solid #ccc;
+    margin-left:48%;
 }
   
 td, th {
@@ -48,4 +49,7 @@ textarea {
 
 #country-code{
     padding:5px;
+}
+div{
+    text-align: center;
 }
