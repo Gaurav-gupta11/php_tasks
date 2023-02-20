@@ -37,7 +37,7 @@
     </form>
     <?php 
       //include logic.php to handle form submission     
-      include 'logic.php'; 
+      include 'logic4.php'; 
       if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ?>
     <!-- Make a table for submission of value -->

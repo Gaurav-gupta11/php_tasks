@@ -27,6 +27,6 @@
       <button type="submit">Submit</button>
     </form>
     <!--include logic.php to handle form submission--> 
-    <?php include 'logic.php'; ?>
+    <?php include 'logic2.php'; ?>
   </body>
 </html>

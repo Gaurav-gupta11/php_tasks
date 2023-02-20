@@ -25,7 +25,7 @@
     </form>
     <?php
     // include logic.php to handle form submission 
-    include 'logic.php';
+    include 'logic1.php';
     ?>
   </body>
 </html>

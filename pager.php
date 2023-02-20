@@ -12,14 +12,14 @@ if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
   <li><a href="pager.php?q=3">Task 3</a></li>
   <li><a href="pager.php?q=4">Task 4</a></li>
   <li><a href="pager.php?q=5">Task 5</a></li>
-  <li><a href="pager.php?q=5">Task 6</a></li>
+  <li><a href="pager.php?q=6">Task 6</a></li>
 </ul>
 
 <?php
 if (isset($_GET['q'])) {
   $q = intval($_GET['q']);
   if ($q >= 1 && $q <= 6) {
-    include 'Task' . $q . '.php';
+    header('Location:Task'.$q.'.php');
   } else {
     echo 'Invalid question number.';
   }
