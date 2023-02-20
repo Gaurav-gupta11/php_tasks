@@ -2,7 +2,7 @@
 // Define a class to represent the form
 class Form {
   public $first, $last, $full, $filename, $filetemp;
-  //constructor to input data
+    // Constructor to initialize the first and last name
   public function __construct($firstName, $lastName, $file_name, $file_temp) {
     $this->first = $firstName;
     $this->last = $lastName;
@@ -10,10 +10,16 @@ class Form {
     $this->filetemp = $file_temp;
   }
 
-  // Function to display the full name
+   // Method to show the full name
   public function showFullName() {
-    $message = "Hello " . $this->full = $this->first . " " . $this->last;
-    echo $message;
+     // Concatenate the first and last name and store in the $full variable
+     $this->full = $this->first . " " . $this->last;
+
+   // Create a message that includes the full name
+   $message = "Hello " . $this->full;
+
+        // Output the message to the user
+        echo $message;
   }
 
   // Function to upload the image
