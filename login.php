@@ -11,6 +11,6 @@ if ($_POST['username'] == $stored_username && $_POST['password'] == $stored_pass
   header('Location: pager.php');
   exit;
 } else {
-  echo 'Invalid username or password.';
+  header('Location: index.html?error=invalid_id_password');
 }
 ?>

@@ -17,7 +17,7 @@ if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
 
 <?php
 if (isset($_GET['q'])) {
-  $q = intval($_GET['q']);
+  $q = $_GET['q'];
   if ($q >= 1 && $q <= 6) {
     header('Location:Task'.$q.'.php');
   } else {
