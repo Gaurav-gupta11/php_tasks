@@ -1,36 +1,45 @@
 <?php
-// define a class to represent the form
-class form{
-      public $first,$last,$full;
+// Define a class to represent the form
+class Form {
+    public $first, $last, $full;
        
-      public function __construct($firstName,$lastName){
-          $this->first=$firstName;
-          $this->last=$lastName;
-      }
-      public function showfullname(){
-        $message = "Hello " . $this->full = $this->first . " " . $this->last;
+    // Constructor to initialize the first and last name
+    public function __construct($firstName, $lastName){
+        $this->first = $firstName;
+        $this->last = $lastName;
+    }
+
+    // Method to show the full name
+    public function showFullName() {
+        // Concatenate the first and last name and store in the $full variable
+        $this->full = $this->first . " " . $this->last;
+
+        // Create a message that includes the full name
+        $message = "Hello " . $this->full;
+
+        // Output the message to the user
         echo $message;
-      }
+    }
 }
 
-// check if the form has been submitted
+// Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $firstName = $_POST["first-name"];
-  $lastName = $_POST["last-name"];
+    $firstName = $_POST["first-name"];
+    $lastName = $_POST["last-name"];
 
-  // create a new form instance 
-  $task = new form($firstName,$lastName);
+    // Create a new form instance 
+    $task = new Form($firstName, $lastName);
    
-  // make variable namePattern to match only alphabets
-  $namePattern = "/^[a-zA-Z]+$/";
+    // Make variable namePattern to match only alphabets
+    $namePattern = "/^[a-zA-Z]+$/";
   
-  // check if the first name and last name match the alphabets pattern
-  if (preg_match($namePattern, $firstName) && preg_match($namePattern, $lastName)) {
-      // if they match, show the full name using the method
-      $task->showfullname();
-  } else {
-      // if they don't match, display an error message
-      echo "Invalid input. Please enter only alphabets for first name and last name.";
-  }
+    // Check if the first name and last name match the alphabets pattern
+    if (preg_match($namePattern, $firstName) && preg_match($namePattern, $lastName)) {
+        // If they match, show the full name using the method
+        $task->showFullName();
+    } else {
+        // If they don't match, display an error message
+        echo "Invalid input. Please enter only alphabets for first name and last name.";
+    }
 }
 ?>
