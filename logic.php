@@ -1,9 +1,12 @@
 <?php
 // Define a class to represent the form
 class Form {
+  
+  // Public class properties
   public $first, $last, $full, $filename, $filetemp, $phone;
-  //constructor to input data
-  public function __construct($firstName, $lastName, $file_name, $file_temp,$phone) {
+  
+  // constructor to input data
+  public function __construct($firstName, $lastName, $file_name, $file_temp, $phone) {
     $this->first = $firstName;
     $this->last = $lastName;
     $this->filename = $file_name;
@@ -11,9 +14,15 @@ class Form {
     $this->phone = $phone;
   }
 
-  // Function to display the full name
+  // Method to show the full name
   public function showFullName() {
-    $message = "Hello " . $this->full = $this->first . " " . $this->last;
+    // Concatenate the first and last name and store in the $full variable
+    $this->full = $this->first . " " . $this->last;
+    
+    // Create a message that includes the full name
+    $message = "Hello " . $this->full;
+
+    // Output the message to the user
     echo $message;
   }
 
@@ -24,22 +33,29 @@ class Form {
       move_uploaded_file($this->filetemp, "upload-images/$this->filename");
     }
   }
-  //Function to split string into array
+
+  // Function to split string into array
   public function splitMarks($marks){
+    // Define the regular expression pattern
     $pattern = "/[\n\|]+/";
+    
+    // Use preg_split to split the marks string into an array
     $subject_mark = preg_split($pattern, $marks);
+    
+    // Return the resulting array
     return $subject_mark;
   }
-  //Function to print phone number
+
+  // Function to print phone number
   public function phoneNumber(){
     echo "<br>+91" . $this->phone;
   }
-
 }
- 
-//Check if the form has been submitted
+
+// Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  //insert the value
+  
+  // Insert the value
   $firstName = $_POST["first-name"];
   $lastName = $_POST["last-name"];
   $file_name = $_FILES['img']['name'];
@@ -47,34 +63,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $marks = $_POST['marks'];
   $phone = $_POST['phone'];
 
-  // make variable namePattern to match only alphabets
+  // Make variable namePattern to match only alphabets
   $namePattern = "/^[a-zA-Z]+$/";
 
-  // make variable namePattern to match only alphabets
+  // Make variable marksPattern to match only alphabets and numbers in specified format
   $marksPattern = '/^[a-zA-Z]+\|[0-9]+$/m';
 
-  // check if the first name and last name and marks match the pattern  
-  if (preg_match($namePattern, $firstName) && preg_match($namePattern, $lastName) && preg_match($marksPattern,$marks)) {
+  // Check if the first name, last name and marks match the pattern  
+  if (preg_match($namePattern, $firstName) && preg_match($namePattern, $lastName) && preg_match($marksPattern, $marks)) {
 
     // Create a new form instance
-    $task = new Form($firstName,$lastName,$file_name,$file_tmp,$phone);
+    $task = new Form($firstName, $lastName, $file_name, $file_tmp, $phone);
     
-    // if they match, upload image using the method
+    // If they match, upload image using the method
     $task->uploadImage($file_name);
     
-    // print the image
-     echo "<p><img src='upload-images/$file_name' alt='img'></p>";
+    // Print the image
+    echo "<p><img src='upload-images/$file_name' alt='img'></p>";
     
-    // if they match, show using method
+    // If they match, show using method
     $task->showFullName();  // for name 
+    
+    // Split the marks string into an array
     $subject_mark = $task->splitMarks($marks);// for marks
-    $j=count($subject_mark);// for count arraylength
+    
+    // Get the length of the array
+    $j = count($subject_mark);// for count arraylength
+    
+    // Print the phone number using the method
     $task->phoneNumber();
   }
-  else 
-  { 
-    // if they dont match, show the error message using the method
-    echo "Invalid input. Please enter only alphabets for first name and last name or provide marks in specified format";
-  }
 }
-
+  ?>
