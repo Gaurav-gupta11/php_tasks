@@ -1,8 +1,10 @@
 <?php
 // Define a class to represent the form
 class Form {
+  // Public class properties
   public $first, $last, $full, $filename, $filetemp, $phone;
-  //constructor to input data
+
+  // constructor to input data
   public function __construct($firstName, $lastName, $file_name, $file_temp,$phone) {
     $this->first = $firstName;
     $this->last = $lastName;
@@ -11,9 +13,15 @@ class Form {
     $this->phone = $phone;
   }
 
-  // Function to display the full name
+  // Method to show the full name
   public function showFullName() {
-    $message = "Hello " . $this->full = $this->first . " " . $this->last;
+    // Concatenate the first and last name and store in the $full variable
+    $this->full = $this->first . " " . $this->last;
+
+    // Create a message that includes the full name
+    $message = "Hello " . $this->full;
+
+    // Output the message to the user
     echo $message;
   }
 
@@ -24,23 +32,32 @@ class Form {
       move_uploaded_file($this->filetemp, "upload-images/$this->filename");
     }
   }
+
   //Function to split string into array
   public function splitMarks($marks){
+    // Define the regular expression pattern
     $pattern = "/[\n\|]+/";
+
+    // Use preg_split to split the marks string into an array
     $subject_mark = preg_split($pattern, $marks);
+
+    // Return the resulting array
     return $subject_mark;
   }
+
   //Function to print phone number
   public function phoneNumber(){
+    // Print the phone number with appropriate formatting
     echo "<br>+91" . $this->phone . "<br>";
   }
-  
+
   //Function to take info of email by mailboxlayer
   public function emailInformation($email){
+    // Initialize a new curl session
     $curl = curl_init();
 
+    // Set curl options
     curl_setopt_array($curl, array(
-
       CURLOPT_URL => "https://api.apilayer.com/email_verification/check?email=" . $email,
       CURLOPT_HTTPHEADER => array(
         "Content-Type: text/plain",
@@ -55,16 +72,22 @@ class Form {
       CURLOPT_CUSTOMREQUEST => "GET"
     ));
 
+    // Execute the curl request and store the response
     $response = curl_exec($curl);
 
+    // Close the curl session
     curl_close($curl);
-    "<br>";
+
+    // Return the response
     return $response;
   }
 
   //method to check valid email
   public function emailValid($string){
+    // Decode the JSON response from mailboxlayer
     $array = json_decode($string);
+
+    // Check if the email is valid using the SMTP check
     if($array->smtp_check == '1'){
       echo 'Email is valid';
     }
@@ -74,10 +97,10 @@ class Form {
   }
 
 }
- 
+
 //Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  //insert the value
+  // Get the form data
   $firstName = $_POST["first-name"];
   $lastName = $_POST["last-name"];
   $file_name = $_FILES['img']['name'];
