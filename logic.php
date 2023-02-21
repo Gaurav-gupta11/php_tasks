@@ -1,15 +1,35 @@
 <?php
-// Define a class to represent the form
+/**
+ * Class Form
+ *
+ * Represents a form with inputs
+ */
 class Form {
-    public $first, $last, $full;
+    /** @var string $first The first name input */
+    public $first;
+    /** @var string $last The last name input */
+    public $last;
+    /** @var string $full The full name concatenated from first and last names */
+    public $full;
        
-    // Constructor to initialize the first and last name
+    /**
+     * Constructor to initialize the first and last name
+     *
+     * @param string $firstName
+     * @param string $lastName
+     * 
+     * @return void
+     */
     public function __construct($firstName, $lastName){
-        $this->first = $firstName;
-        $this->last = $lastName;
+      $this->first = $firstName;
+      $this->last = $lastName;
     }
 
-    // Method to show the full name
+    /**
+     * Method to show the full name
+     *
+     * @return void
+     */
     public function showFullName() {
         // Concatenate the first and last name and store in the $full variable
         $this->full = $this->first . " " . $this->last;
