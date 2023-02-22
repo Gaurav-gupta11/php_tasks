@@ -15,6 +15,8 @@ class Form {
   public $filename;
   /** @var string $filetemp The uploaded image temporary file path.*/
   public $filetemp;
+  /** @var string $marks The marks input in alphabet|number.*/
+  public $marks;
   /** @var int $phone The phone number input */
   public $phone;
 
@@ -25,15 +27,17 @@ class Form {
    * @param string $lastName
    * @param string $fileName
    * @param string $fileTemp
+   * @param string $marks
    * @param int    $phone
    * 
    * @return void
    */
-  public function __construct($firstName, $lastName, $fileName, $fileTemp, $phone) {
+  public function __construct($firstName, $lastName, $fileName, $fileTemp, $marks, $phone) {
     $this->first = $firstName;
     $this->last = $lastName;
     $this->filename = $fileName;
     $this->filetemp = $fileTemp;
+    $this->marks=$marks;
     $this->phone = $phone;
   }
 
@@ -44,12 +48,10 @@ class Form {
    */
   public function showFullName() {
     // Concatenate the first and last name and store in the $full variable.
-    $this->full = $this->first . ' ' . $this->last;
-    // Create a message that includes the full name.
-    $message = 'Hello ' . $this->full;
+    $this->full = $this->first . " " . $this->last;
 
-    // Output the message to the user.
-    echo $message;
+    // Print a message that includes the full name.
+    echo "Hello " . $this->full;
   }
 
   /**
@@ -67,15 +69,13 @@ class Form {
   /**
    * Method to split marks based on newline and '|' character.
    *
-   * @param string $marks
-   *
    * @return array
    */
-  public function splitMarks($marks) {
+  public function splitMarks() {
     // Define the regular expression pattern.
     $pattern = '/[\n|]+/';
     // Use preg_split to split the marks string into an array.
-    $subject_mark = preg_split($pattern, $marks);
+    $subject_mark = preg_split($pattern, $this->marks);
     return $subject_mark;
   }
 
@@ -110,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (preg_match($namePattern, $firstName) && preg_match($namePattern, $lastName) && preg_match($marksPattern, $marks)) {
 
     // Create a new form instance
-    $task = new Form($firstName, $lastName, $file_name, $file_tmp, $phone);
+    $task = new Form($firstName, $lastName, $file_name, $file_tmp, $marks, $phone);
     
     // If they match, upload image using the method
     $task->uploadImage($file_name);
@@ -122,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $task->showFullName();  // for name 
     
     // Split the marks string into an array
-    $subject_mark = $task->splitMarks($marks);// for marks
+    $subject_mark = $task->splitMarks();// for marks
     
     // Get the length of the array
     $j = count($subject_mark);// for count arraylength
