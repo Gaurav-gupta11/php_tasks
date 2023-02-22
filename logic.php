@@ -5,6 +5,7 @@
  * Represents a form with inputs
  */
 class Form {
+    
   /** @var string $first The first name input */
   public $first;
   /** @var string $last The last name input */
@@ -34,11 +35,8 @@ class Form {
     // Concatenate the first and last name and store in the $full variable
     $this->full = $this->first . " " . $this->last;
 
-    // Create a message that includes the full name
-    $message = "Hello " . $this->full;
-
-    // Output the message to the user
-    echo $message;
+    // Output message that includes the full name
+    echo "Hello " . $this->full;
   }
 }
 
