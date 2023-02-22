@@ -1,101 +1,149 @@
 <?php
-// Define a class to represent the form
-class Form {
-  // Public class properties
-  public $first, $last, $full, $filename, $filetemp, $phone;
 
-  // constructor to input data
-  public function __construct($firstName, $lastName, $file_name, $file_temp,$phone) {
+/**
+ * Defines a class to represent the form.
+ */
+class Form {
+
+  /** @var string $first The first name input */
+  public $first;
+  /** @var string $last The last name input */
+  public $last;
+  /** @var string $full The full name concatenated from first and last names */
+  public $full;
+  /** @var string $filename The uploaded image filename.*/
+  public $filename;
+  /** @var string $filetemp The uploaded image temporary file path.*/
+  public $filetemp;
+  /** @var int $phone The phone number input */
+  public $phone;
+
+  /**
+   * Constructor to initalize the form object
+   *
+   * @param string $firstName
+   * @param string $lastName
+   * @param string $fileName
+   * @param string $fileTemp
+   * @param int    $phone
+   * 
+   * @return void
+   */
+  public function __construct($firstName, $lastName, $fileName, $fileTemp, $phone) {
     $this->first = $firstName;
     $this->last = $lastName;
-    $this->filename = $file_name;
-    $this->filetemp = $file_temp;
+    $this->filename = $fileName;
+    $this->filetemp = $fileTemp;
     $this->phone = $phone;
   }
 
-  // Method to show the full name
+  /**
+   * Method to show the full name.
+   * 
+   * @return void
+   */
   public function showFullName() {
-    // Concatenate the first and last name and store in the $full variable
-    $this->full = $this->first . " " . $this->last;
+    // Concatenate the first and last name and store in the $full variable.
+    $this->full = $this->first . ' ' . $this->last;
+    // Create a message that includes the full name.
+    $message = 'Hello ' . $this->full;
 
-    // Create a message that includes the full name
-    $message = "Hello " . $this->full;
-
-    // Output the message to the user
+    // Output the message to the user.
     echo $message;
   }
 
-  // Function to upload the image
+  /**
+   * Method to upload the image.
+   * 
+   * @return void
+   */
   public function uploadImage() {
-    // Validate if image is selected and not empty
+    // Validate if image is selected and not empty.
     if (!empty($this->filename) && !empty($this->filetemp)) {
-      move_uploaded_file($this->filetemp, "upload-images/$this->filename");
+      move_uploaded_file($this->filetemp, 'upload-images/' . $this->filename);
     }
   }
 
-  //Function to split string into array
-  public function splitMarks($marks){
-    // Define the regular expression pattern
-    $pattern = "/[\n\|]+/";
-
-    // Use preg_split to split the marks string into an array
+  /**
+   * Method to split marks based on newline and '|' character.
+   *
+   * @param string $marks
+   *
+   * @return array
+   */
+  public function splitMarks($marks) {
+    // Define the regular expression pattern.
+    $pattern = '/[\n|]+/';
+    // Use preg_split to split the marks string into an array.
     $subject_mark = preg_split($pattern, $marks);
-
-    // Return the resulting array
     return $subject_mark;
   }
 
-  //Function to print phone number
+  /**
+   * Method to print phone number
+   *
+   * @return void
+   */
   public function phoneNumber(){
-    // Print the phone number with appropriate formatting
-    echo "<br>+91" . $this->phone . "<br>";
+    echo "<br>+91" . $this->phone;
   }
 
-  //Function to take info of email by mailboxlayer
-  public function emailInformation($email){
-    // Initialize a new curl session
+  /**
+   *
+   * Returns information about an email using the Mailboxlayer API.
+   *
+   * @param string $email
+   * 
+   * @return string
+   * The API response as a JSON string.
+   */
+  public function emailInformation($email) {
+    // Initialize a new cURL session.
     $curl = curl_init();
-
-    // Set curl options
+    // Set cURL options.
     curl_setopt_array($curl, array(
-      CURLOPT_URL => "https://api.apilayer.com/email_verification/check?email=" . $email,
-      CURLOPT_HTTPHEADER => array(
-        "Content-Type: text/plain",
-        "apikey: 9di1H8UdmecvJtJilzeHnETFhsPQN17I"
-      ),
-      CURLOPT_RETURNTRANSFER => true,
-      CURLOPT_ENCODING => "",
-      CURLOPT_MAXREDIRS => 10,
-      CURLOPT_TIMEOUT => 0,
-      CURLOPT_FOLLOWLOCATION => true,
-      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-      CURLOPT_CUSTOMREQUEST => "GET"
+    CURLOPT_URL => "https://api.apilayer.com/email_verification/check?email=" . $email,
+    CURLOPT_HTTPHEADER => array(
+    "Content-Type: text/plain",
+    "apikey: 9di1H8UdmecvJtJilzeHnETFhsPQN17I"
+    ),
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => "",
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => "GET",
     ));
-
-    // Execute the curl request and store the response
+    
+    // Execute the cURL request and store the response.
     $response = curl_exec($curl);
-
-    // Close the curl session
+    
+    // Close the cURL session.
     curl_close($curl);
-
-    // Return the response
+    
+    // Return the response.
     return $response;
   }
-
-  //method to check valid email
-  public function emailValid($string){
-    // Decode the JSON response from mailboxlayer
+    
+  /**
+   * Checks if an email is valid using the Mailboxlayer API response.
+   *
+   * @param string $string
+   * 
+   * @return string
+   */
+  public function emailValid($string) {
+    // Decode the JSON response from Mailboxlayer.
     $array = json_decode($string);
-
-    // Check if the email is valid using the SMTP check
-    if($array->smtp_check == '1'){
-      echo 'Email is valid';
+    // Check if the email is valid using the SMTP check.
+    if ($array->smtp_check == '1') {
+    return 'Email is valid';
     }
-    else{
-      echo 'Email is not valid';
+    else {
+    return 'Email is not valid';
     }
   }
-
 }
 
 //Check if the form has been submitted
