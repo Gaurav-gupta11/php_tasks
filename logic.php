@@ -1,47 +1,80 @@
 <?php
 
-// Define a class to represent the form
+/**
+ * Defines a class to represent the form.
+ */
 class Form {
-  
-  // Public class properties
-  public $first, $last, $full, $filename, $filetemp;
-  
-  // Constructor to input data
-  public function __construct($firstName, $lastName, $file_name, $file_temp) {
+  /** @var string $first The first name input */
+  public $first;
+  /** @var string $last The last name input */
+  public $last;
+  /** @var string $full The full name concatenated from first and last names */
+  public $full;
+  /** @var string $filename The uploaded image filename.*/
+  public $filename;
+  /** @var string $filetemp The uploaded image temporary file path.*/
+  public $filetemp;
+
+  /**
+   * Constructor to initalize the form object
+   *
+   * @param string $firstName
+   * @param string $lastName
+   * @param string $fileName
+   * @param string $fileTemp
+   * 
+   * @return void
+   */
+  public function __construct($firstName, $lastName, $fileName, $fileTemp) {
     $this->first = $firstName;
     $this->last = $lastName;
-    $this->filename = $file_name;
-    $this->filetemp = $file_temp;
+    $this->filename = $fileName;
+    $this->filetemp = $fileTemp;
   }
 
-  // Method to show the full name
+  /**
+   * Method to show the full name.
+   * 
+   * @return void
+   */
   public function showFullName() {
-    // Concatenate the first and last name and store in the $full variable
-    $this->full = $this->first . " " . $this->last;
-    // Create a message that includes the full name
-    $message = "Hello " . $this->full;
+    // Concatenate the first and last name and store in the $full variable.
+    $this->full = $this->first . ' ' . $this->last;
+    // Create a message that includes the full name.
+    $message = 'Hello ' . $this->full;
 
-    // Output the message to the user
+    // Output the message to the user.
     echo $message;
   }
 
-  // Function to upload the image
+  /**
+   * Method to upload the image.
+   * 
+   * @return void
+   */
   public function uploadImage() {
-    // Validate if image is selected and not empty
+    // Validate if image is selected and not empty.
     if (!empty($this->filename) && !empty($this->filetemp)) {
-      move_uploaded_file($this->filetemp, "upload-images/$this->filename");
+      move_uploaded_file($this->filetemp, 'upload-images/' . $this->filename);
     }
   }
 
-  // Function to split marks based on newline and '|' character
+  /**
+   * Method to split marks based on newline and '|' character.
+   *
+   * @param string $marks
+   *
+   * @return array
+   */
   public function splitMarks($marks) {
-    // Define the regular expression pattern
-    $pattern = "/[\n\|]+/";
-    // Use preg_split to split the marks string into an array
+    // Define the regular expression pattern.
+    $pattern = '/[\n|]+/';
+    // Use preg_split to split the marks string into an array.
     $subject_mark = preg_split($pattern, $marks);
     return $subject_mark;
   }
 }
+
  
 // Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
