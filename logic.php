@@ -1,141 +1,212 @@
 <?php
-// Define a class to represent the form
+
+/**
+ * Defines a class to represent the form.
+ */
 class Form {
-    // Public class properties
-    public $first, $last, $full, $filename, $filetemp, $phone;
 
-    //constructor to input data
-    public function __construct($firstName, $lastName, $file_name, $file_temp, $phone) {
-        $this->first = $firstName;
-        $this->last = $lastName;
-        $this->filename = $file_name;
-        $this->filetemp = $file_temp;
-        $this->phone = $phone;
-    }
+  /** @var string $first The first name input */
+  public $first;
+  /** @var string $last The last name input */
+  public $last;
+  /** @var string $full The full name concatenated from first and last names */
+  public $full;
+  /** @var string $filename The uploaded image filename.*/
+  public $filename;
+  /** @var string $filetemp The uploaded image temporary file path.*/
+  public $filetemp;
+  /** @var int $phone The phone number input */
+  public $phone;
 
-    // Method to show the full name
-    public function showFullName() {
-        // Concatenate the first and last name and store in the $full variable
-        $this->full = $this->first . " " . $this->last;
-
-        // Create a message that includes the full name
-        $message = "Hello " . $this->full;
-
-        // Output the message to the user
-        echo $message;
-    }
-
-    // Function to upload the image
-    public function uploadImage() {
-        // Validate if image is selected and not empty
-        if (!empty($this->filename) && !empty($this->filetemp)) {
-            move_uploaded_file($this->filetemp, "upload-images/$this->filename");
-        }
-    }
-
-    //Function to split string into array
-    public function splitMarks($marks){
-        // Define the regular expression pattern
-        $pattern = "/[\n\|]+/";
-
-        // Use preg_split to split the marks string into an array
-        $subject_mark = preg_split($pattern, $marks);
-
-        // Return the resulting array
-        return $subject_mark;
-    }
-
-    //Function to print phone number
-    public function phoneNumber(){
-        // Print the phone number with appropriate formatting
-        echo "<br>+91" . $this->phone . "<br>";
-    }
-
-    //Function to take info of email by mailboxlayer
-    public function emailInformation($email){
-        // Initialize a new curl session
-        $curl = curl_init();
-
-        // Set curl options
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://api.apilayer.com/email_verification/check?email=" . $email,
-            CURLOPT_HTTPHEADER => array(
-                "Content-Type: text/plain",
-                "apikey: 9di1H8UdmecvJtJilzeHnETFhsPQN17I"
-            ),
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET"
-        ));
-
-        // Execute the curl request and store the response
-        $response = curl_exec($curl);
-
-        // Close the curl session
-        curl_close($curl);
-
-        // Return the response
-        return $response;
-    }
-
-    //method to check valid email
-    public function emailValid($string){
-        // Decode the JSON response from mailboxlayer
-        $array = json_decode($string);
-
-        // Check if the email is valid using the SMTP check
-        if($array->smtp_check == '1'){
-            echo 'Email is valid';
-        } else {
-            echo 'Email is not valid';
-        }
-    }
-    //Method to print marks
-    public function printMarks($subject_mark,$j){
-      //Print the HTML Table format
-      echo"<table> <thead><tr><th>Subject</th><th>Marks</th></tr></thead>";
-        
-        //For loop to print subject and marks in table
-        for($i=0;$i<$j;$i++) {
-
-          echo"<tr><td>";echo $subject_mark[$i];echo"</td><td>";    
-          echo $subject_mark[$i=$i+1];echo"</td></tr>";
-        } echo "</table>";
-
-
-    }
-    // Method to download file
-    public function downloadFile($firstName ,  $lastName ,$email, $phone,$marks){
-      // Define the file name
-      $filename = uniqid() . '.doc';
-      // Define the document content
-      $doc_content = "Name: $firstName $lastName \nEmail: $email\nPhone: $phone\nMarks:\n Subject | Marks\n";
-
-      // Split the subject and marks using the splitMarks method
-      $subject_mark = $this->splitMarks($marks);
-
-      // Get the array length
-      $j = count($subject_mark);
-
-      // For loop to add the subject and marks to the document content
-      for($i=0; $i<$j; $i++) {
-        $doc_content .= "    " . $subject_mark[$i] . "   ";
-            $doc_content .= "    " . $subject_mark[$i=$i+1] . "\n";
-          }
-
-      //Put contents in file
-      file_put_contents($filename, $doc_content);
-
-      //Print doc_content
-      echo $doc_content;
-
-    }
-
+  /**
+   * Constructor to initalize the form object
+   *
+   * @param string $firstName
+   * @param string $lastName
+   * @param string $fileName
+   * @param string $fileTemp
+   * @param int    $phone
+   * 
+   * @return void
+   */
+  public function __construct($firstName, $lastName, $fileName, $fileTemp, $phone) {
+    $this->first = $firstName;
+    $this->last = $lastName;
+    $this->filename = $fileName;
+    $this->filetemp = $fileTemp;
+    $this->phone = $phone;
   }
+
+  /**
+   * Method to show the full name.
+   * 
+   * @return void
+   */
+  public function showFullName() {
+    // Concatenate the first and last name and store in the $full variable.
+    $this->full = $this->first . ' ' . $this->last;
+    // Create a message that includes the full name.
+    $message = 'Hello ' . $this->full;
+
+    // Output the message to the user.
+    echo $message;
+  }
+
+  /**
+   * Method to upload the image.
+   * 
+   * @return void
+   */
+  public function uploadImage() {
+    // Validate if image is selected and not empty.
+    if (!empty($this->filename) && !empty($this->filetemp)) {
+      move_uploaded_file($this->filetemp, 'upload-images/' . $this->filename);
+    }
+  }
+
+  /**
+   * Method to split marks based on newline and '|' character.
+   *
+   * @param string $marks
+   *
+   * @return array
+   */
+  public function splitMarks($marks) {
+    // Define the regular expression pattern.
+    $pattern = '/[\n|]+/';
+    // Use preg_split to split the marks string into an array.
+    $subject_mark = preg_split($pattern, $marks);
+    return $subject_mark;
+  }
+
+  /**
+   * Method to print phone number
+   *
+   * @return void
+   */
+  public function phoneNumber(){
+    echo "<br>+91" . $this->phone;
+  }
+
+  /**
+   *
+   * Returns information about an email using the Mailboxlayer API.
+   *
+   * @param string $email
+   * 
+   * @return string
+   * The API response as a JSON string.
+   */
+  public function emailInformation($email) {
+    // Initialize a new cURL session.
+    $curl = curl_init();
+    // Set cURL options.
+    curl_setopt_array($curl, array(
+    CURLOPT_URL => "https://api.apilayer.com/email_verification/check?email=" . $email,
+    CURLOPT_HTTPHEADER => array(
+    "Content-Type: text/plain",
+    "apikey: 9di1H8UdmecvJtJilzeHnETFhsPQN17I"
+    ),
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => "",
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => "GET",
+    ));
+    
+    // Execute the cURL request and store the response.
+    $response = curl_exec($curl);
+    
+    // Close the cURL session.
+    curl_close($curl);
+    
+    // Return the response.
+    return $response;
+  }
+    
+  /**
+   * Checks if an email is valid using the Mailboxlayer API response.
+   *
+   * @param string $string
+   * 
+   * @return string
+   */
+  public function emailValid($string) {
+    // Decode the JSON response from Mailboxlayer.
+    $array = json_decode($string);
+    // Check if the email is valid using the SMTP check.
+    if ($array->smtp_check == '1') {
+    return 'Email is valid';
+    }
+    else {
+    return 'Email is not valid';
+    }
+  }
+
+  /**
+   * Prints subject marks in an HTML table.
+   *
+   * @param array $subject_mark
+   *
+   * @return void
+   */
+  public function printMarks(array $subject_mark) {
+    // Print the HTML table format.
+    echo "<table><thead><tr><th>Subject</th><th>Marks</th></tr></thead>";
+  
+    // For loop to print subject and marks in table.
+    for ($i = 0, $j = count($subject_mark); $i < $j; $i++) {
+      echo "<tr><td>";
+      echo $subject_mark[$i];
+      echo "</td><td>";
+      echo $subject_mark[$i=$i+1];
+      echo "</td></tr>";
+    }
+    echo "</table>";
+  }
+  
+  /**
+   * Generates and downloads a file with given user information and marks.
+   *
+   * @param string $firstName
+   *   First name of the user.
+   * @param string $lastName
+   *   Last name of the user.
+   * @param string $email
+   *   Email of the user.
+   * @param string $phone
+   *   Phone number of the user.
+   * @param string $marks
+   *   A string containing subject and corresponding marks.
+   */
+  public function downloadFile(string $firstName, string $lastName, string $email, string $phone, string $marks) {
+    // Define the file name.
+    $filename = uniqid() . '.doc';
+  
+    // Define the document content.
+    $doc_content = "Name: $firstName $lastName \nEmail: $email\nPhone: $phone\nMarks:\n Subject | Marks\n";
+  
+    // Split the subject and marks using the splitMarks method.
+    $subject_mark = $this->splitMarks($marks);
+  
+    // Get the array length.
+    $j = count($subject_mark);
+  
+    // For loop to add the subject and marks to the document content.
+    for ($i = 0; $i < $j; $i++) {
+      $doc_content .= "    " . $subject_mark[$i] . "   ";
+      $doc_content .= "    " . $subject_mark[$i=$i+1] . "\n";
+    }
+  
+    // Put contents in file.
+    file_put_contents($filename, $doc_content);
+  
+    // Print doc_content.
+    echo $doc_content;
+  }
+}  
  
 //Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
