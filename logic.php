@@ -41,11 +41,9 @@ class Form {
     // Concatenate the first and last name and store in the $full variable.
     $this->full = $this->first . " " . $this->last;
 
-    // Create a message that includes the full name.
-    $message = "Hello " . $this->full;
+    // Print a message that includes the full name.
+    echo "Hello " . $this->full;
 
-    // Output the message to the user.
-    echo $message;
   }
 
   /**
