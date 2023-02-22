@@ -1,52 +1,89 @@
 <?php
-// Define a class to represent the form
+
+/**
+ * Defines a class to represent the form.
+ */
 class Form {
-  
-  // Public class properties
-  public $first, $last, $full, $filename, $filetemp, $phone;
-  
-  // constructor to input data
-  public function __construct($firstName, $lastName, $file_name, $file_temp, $phone) {
+
+  /** @var string $first The first name input */
+  public $first;
+  /** @var string $last The last name input */
+  public $last;
+  /** @var string $full The full name concatenated from first and last names */
+  public $full;
+  /** @var string $filename The uploaded image filename.*/
+  public $filename;
+  /** @var string $filetemp The uploaded image temporary file path.*/
+  public $filetemp;
+  /** @var int $phone The phone number input */
+  public $phone;
+
+  /**
+   * Constructor to initalize the form object
+   *
+   * @param string $firstName
+   * @param string $lastName
+   * @param string $fileName
+   * @param string $fileTemp
+   * @param int    $phone
+   * 
+   * @return void
+   */
+  public function __construct($firstName, $lastName, $fileName, $fileTemp, $phone) {
     $this->first = $firstName;
     $this->last = $lastName;
-    $this->filename = $file_name;
-    $this->filetemp = $file_temp;
+    $this->filename = $fileName;
+    $this->filetemp = $fileTemp;
     $this->phone = $phone;
   }
 
-  // Method to show the full name
+  /**
+   * Method to show the full name.
+   * 
+   * @return void
+   */
   public function showFullName() {
-    // Concatenate the first and last name and store in the $full variable
-    $this->full = $this->first . " " . $this->last;
-    
-    // Create a message that includes the full name
-    $message = "Hello " . $this->full;
+    // Concatenate the first and last name and store in the $full variable.
+    $this->full = $this->first . ' ' . $this->last;
+    // Create a message that includes the full name.
+    $message = 'Hello ' . $this->full;
 
-    // Output the message to the user
+    // Output the message to the user.
     echo $message;
   }
 
-  // Function to upload the image
+  /**
+   * Method to upload the image.
+   * 
+   * @return void
+   */
   public function uploadImage() {
-    // Validate if image is selected and not empty
+    // Validate if image is selected and not empty.
     if (!empty($this->filename) && !empty($this->filetemp)) {
-      move_uploaded_file($this->filetemp, "upload-images/$this->filename");
+      move_uploaded_file($this->filetemp, 'upload-images/' . $this->filename);
     }
   }
 
-  // Function to split string into array
-  public function splitMarks($marks){
-    // Define the regular expression pattern
-    $pattern = "/[\n\|]+/";
-    
-    // Use preg_split to split the marks string into an array
+  /**
+   * Method to split marks based on newline and '|' character.
+   *
+   * @param string $marks
+   *
+   * @return array
+   */
+  public function splitMarks($marks) {
+    // Define the regular expression pattern.
+    $pattern = '/[\n|]+/';
+    // Use preg_split to split the marks string into an array.
     $subject_mark = preg_split($pattern, $marks);
-    
-    // Return the resulting array
     return $subject_mark;
   }
 
-  // Function to print phone number
+  /**
+   * Method to print phone number
+   *
+   * @return void
+   */
   public function phoneNumber(){
     echo "<br>+91" . $this->phone;
   }
