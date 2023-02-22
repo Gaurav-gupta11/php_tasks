@@ -47,7 +47,6 @@ class Form {
 
     // Print a message that includes the full name.
     echo "Hello " . $this->full;
-
   }
 
   /**
