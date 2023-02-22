@@ -15,8 +15,12 @@ class Form {
   public $filename;
   /** @var string $filetemp The uploaded image temporary file path.*/
   public $filetemp;
+  /** @var string $marks The marks input in alphabet|number.*/
+  public $marks;
   /** @var int $phone The phone number input */
   public $phone;
+  /** @var string $email The email input */
+  public $email;
 
   /**
    * Constructor to initalize the form object
@@ -25,16 +29,20 @@ class Form {
    * @param string $lastName
    * @param string $fileName
    * @param string $fileTemp
+   * @param string $marks
    * @param int    $phone
+   * @param string $email
    * 
    * @return void
    */
-  public function __construct($firstName, $lastName, $fileName, $fileTemp, $phone) {
+  public function __construct($firstName, $lastName, $fileName, $fileTemp, $marks, $phone, $email) {
     $this->first = $firstName;
     $this->last = $lastName;
     $this->filename = $fileName;
     $this->filetemp = $fileTemp;
+    $this->marks = $marks;
     $this->phone = $phone;
+    $this->email = $email;
   }
 
   /**
@@ -44,12 +52,10 @@ class Form {
    */
   public function showFullName() {
     // Concatenate the first and last name and store in the $full variable.
-    $this->full = $this->first . ' ' . $this->last;
-    // Create a message that includes the full name.
-    $message = 'Hello ' . $this->full;
+    $this->full = $this->first . " " . $this->last;
 
-    // Output the message to the user.
-    echo $message;
+    // Print a message that includes the full name.
+    echo "Hello " . $this->full;
   }
 
   /**
@@ -67,15 +73,13 @@ class Form {
   /**
    * Method to split marks based on newline and '|' character.
    *
-   * @param string $marks
-   *
    * @return array
    */
-  public function splitMarks($marks) {
+  public function splitMarks() {
     // Define the regular expression pattern.
     $pattern = '/[\n|]+/';
     // Use preg_split to split the marks string into an array.
-    $subject_mark = preg_split($pattern, $marks);
+    $subject_mark = preg_split($pattern, $this->marks);
     return $subject_mark;
   }
 
@@ -91,18 +95,16 @@ class Form {
   /**
    *
    * Returns information about an email using the Mailboxlayer API.
-   *
-   * @param string $email
    * 
    * @return string
    * The API response as a JSON string.
    */
-  public function emailInformation($email) {
+  public function emailInformation() {
     // Initialize a new cURL session.
     $curl = curl_init();
     // Set cURL options.
     curl_setopt_array($curl, array(
-    CURLOPT_URL => "https://api.apilayer.com/email_verification/check?email=" . $email,
+    CURLOPT_URL => "https://api.apilayer.com/email_verification/check?email=" . $this->email,
     CURLOPT_HTTPHEADER => array(
     "Content-Type: text/plain",
     "apikey: 9di1H8UdmecvJtJilzeHnETFhsPQN17I"
@@ -138,10 +140,10 @@ class Form {
     $array = json_decode($string);
     // Check if the email is valid using the SMTP check.
     if ($array->smtp_check == '1') {
-    return 'Email is valid';
+    echo 'Email is valid';
     }
     else {
-    return 'Email is not valid';
+    echo 'Email is not valid';
     }
   }
 }
@@ -173,7 +175,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $bool=true;
 
     // Create a new form instance
-    $task = new Form($firstName,$lastName,$file_name,$file_tmp,$phone);
+    $task = new Form($firstName,$lastName,$file_name,$file_tmp,$marks,$phone,$email);
 
     //To check email syntax is correct
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -191,11 +193,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // if Pattern match,  call methods
     $task->uploadImage($file_name);// for uploading image
     $task->showFullName();  // for name 
-    $subject_mark = $task->splitMarks($marks);// for marks
+    $subject_mark = $task->splitMarks();// for marks
     $j=count($subject_mark);// for count arraylength
     $task->phoneNumber();// for print phone number
     echo "Valid email syntax<br>"; // print if email syntax is valid
-    $string = $task->emailInformation($email); // to get the information of email from mailboxlayer
+    $string = $task->emailInformation(); // to get the information of email from mailboxlayer
     $task->emailValid($string); //check if email id is valid
     }
 }
