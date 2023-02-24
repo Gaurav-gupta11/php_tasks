@@ -125,8 +125,7 @@ class Form {
     curl_close($curl);
     
     // Return the response.
-    echo $response;
-    return $response;
+   return $response;
   }
     
   /**
@@ -147,6 +146,7 @@ class Form {
     }
   }
 }
+
 //Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // Get the form data
