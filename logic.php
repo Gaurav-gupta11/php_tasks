@@ -98,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $task = new Form($firstName,$lastName,$file_name,$file_tmp,$marks);
     
     // If they match, upload image using the method
-    $task->uploadImage($file_name);
+    $task->uploadImage();
     
     // Print the image
     echo "<p><img src='upload-images/$file_name' alt='img'></p>";
