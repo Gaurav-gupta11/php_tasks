@@ -45,6 +45,11 @@ class Form {
     $this->email = $email;
   }  
 
+/**
+ * Method to show the full name.
+ * 
+ * @return void
+ */
   /**
    * Method to show the full name.
    * 
@@ -133,7 +138,6 @@ class Form {
    *
    * @param string $string
    * 
-   * @return string
    */
   public function emailValid($string) {
     // Decode the JSON response from Mailboxlayer.
@@ -208,8 +212,8 @@ class Form {
     // Print doc_content.
     echo $doc_content;
   }
-}  
- 
+}
+
 //Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   //insert the value
@@ -265,13 +269,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      echo "<p><img  width=400px; height=200px; src='upload-images/$file_name' alt='img'></p>";
     
     // if Pattern match,  call methods
-    $task->uploadImage($file_name);// for uploading image
+    $task->uploadImage();// for uploading image
     $task->showFullName();  // for name 
-    $subject_mark = $task->splitMarks($marks);// for marks
+    $subject_mark = $task->splitMarks();// for marks
     $task->printMarks($subject_mark);//for printing marks inside table
     $task->phoneNumber();// for print phone number
     echo "Valid email syntax<br>"; // print if email syntax is valid
-    $string = $task->emailInformation($email); // to get the information of email from mailboxlayer
+    $string = $task->emailInformation(); // to get the information of email from mailboxlayer
     $task->emailValid($string); //check if email id is valid
     }
 }
