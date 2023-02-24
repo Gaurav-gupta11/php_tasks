@@ -125,6 +125,7 @@ class Form {
     curl_close($curl);
     
     // Return the response.
+    echo $response;
     return $response;
   }
     
@@ -133,7 +134,6 @@ class Form {
    *
    * @param string $string
    * 
-   * @return string
    */
   public function emailValid($string) {
     // Decode the JSON response from Mailboxlayer.
@@ -147,7 +147,6 @@ class Form {
     }
   }
 }
-
 //Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // Get the form data
@@ -185,13 +184,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     else
     {
-    $task->uploadImage($file_name);
     
     // print the image
      echo "<p><img  width=400px; height=200px; src='upload-images/$file_name' alt='img'></p>";
     
     // if Pattern match,  call methods
-    $task->uploadImage($file_name);// for uploading image
+    $task->uploadImage();// for uploading image
     $task->showFullName();  // for name 
     $subject_mark = $task->splitMarks();// for marks
     $j=count($subject_mark);// for count arraylength
