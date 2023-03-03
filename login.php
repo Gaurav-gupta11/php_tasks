@@ -21,10 +21,11 @@ class LoginController
         if ($username == $stored_username && $password == $stored_password) {
             $_SESSION['logged_in'] = true;
             $_SESSION['username'] = $stored_username;
-            header('Location: pager.php');
+            header('Location: pager_index.php');
             exit;
         } else {
             header('Location: index.html?error=invalid_id_password');
+           
         }
     }
 }

@@ -1,5 +1,5 @@
 <?php
-
+ 
 /**
  * Defines a class to represent the form.
  */
@@ -146,6 +146,7 @@ class Form {
     }
   }
 }
+echo"<link rel=stylesheet href=style.css>";
 
 //Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -194,7 +195,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $subject_mark = $task->splitMarks();// for marks
     $j=count($subject_mark);// for count arraylength
     $task->phoneNumber();// for print phone number
-    echo "Valid email syntax<br>"; // print if email syntax is valid
+    echo "<br>Valid email syntax<br>"; // print if email syntax is valid
     $string = $task->emailInformation(); // to get the information of email from mailboxlayer
     $task->emailValid($string); //check if email id is valid
     }
