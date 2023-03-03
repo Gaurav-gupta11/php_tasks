@@ -26,8 +26,8 @@ body{
      cursor: pointer
  }
  table {
+    border-collapse: collapse;
     border: 1px solid #ccc;
-    margin-left:48%;
 }
   
 td, th {
@@ -46,7 +46,4 @@ textarea {
     vertical-align: top;
     margin-top: 10px;
 }
-
-#country-code{
-    padding:5px;
-}
+  
