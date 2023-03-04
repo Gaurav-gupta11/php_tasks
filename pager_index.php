@@ -11,12 +11,12 @@
 <body>
     <nav>
         <ul>
-            <li><a href="pager.php?q=1">Task 1</a></li>
-            <li><a href="pager.php?q=2">Task 2</a></li>
-            <li><a href="pager.php?q=3">Task 3</a></li>
-            <li><a href="pager.php?q=4">Task 4</a></li>
-            <li><a href="pager.php?q=5">Task 5</a></li>
-            <li><a href="pager.php?q=6">Task 6</a></li>
+            <li><a href="pager_index.php?q=1">Task 1</a></li>
+            <li><a href="pager_index.php?q=2">Task 2</a></li>
+            <li><a href="pager_index.php?q=3">Task 3</a></li>
+            <li><a href="pager_index.php?q=4">Task 4</a></li>
+            <li><a href="pager_index?q=5">Task 5</a></li>
+            <li><a href="pager_index?q=6">Task 6</a></li>
             <li>
                 <form action="index.html" method="post">
                     <input type="submit" name="logout" value="Logout">
