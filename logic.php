@@ -89,11 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // Make variable namePattern to match only alphabets
   $namePattern = "/^[a-zA-Z]+$/";
 
-  // Make variable namePattern to match only alphabets
-  $marksPattern = '/^[a-zA-Z]+\|[0-9]+$/m';
-
   // Check if the first name and last name and marks match the pattern  
-  if (preg_match($namePattern, $firstName) && preg_match($namePattern, $lastName) && preg_match($marksPattern,$marks)) {
+  if (preg_match($namePattern, $firstName) && preg_match($namePattern, $lastName)) {
     // Create a new form instance
     $task = new Form($firstName,$lastName,$file_name,$file_tmp,$marks);
     
