@@ -37,5 +37,7 @@
       <button type="submit" name="submit">Submit</button>
       <button type="submit" name="download" >Download</button>
     </form>
+    <!-- create a div to display error messages -->
+    <div id="error-message"></div>
   </body>
 </html>
