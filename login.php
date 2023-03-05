@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 /**
  * Class LoginController
  * Handles the login functionality of the application.
@@ -15,22 +17,16 @@ class LoginController
      */
     public function authenticateUser(string $username, string $password): void
     {
-        $stored_password = 'gaurav';
-        $stored_username = 'gaurav';
-
-        if ($username == $stored_username && $password == $stored_password) {
+        if ($username == 'gaurav' && $password == 'gaurav') {
             $_SESSION['logged_in'] = true;
-            $_SESSION['username'] = $stored_username;
             header('Location: pager_index.php');
             exit;
         } else {
-            header('Location: index.html?error=invalid_id_password');
+            header('Location: index.php?error=invalid_id_password');
            
         }
     }
 }
-
-session_start();
 
 // Create an instance of the LoginController class
 $login_controller = new LoginController();

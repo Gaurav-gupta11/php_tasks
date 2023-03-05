@@ -26,6 +26,8 @@
       <br><br>
       <button type="submit">Submit</button>
     </form>
+    <!-- create a div to display error messages -->
+    <div id="error-message"></div>
     <!--include logic.php to handle form submission--> 
     <?php include 'logic2.php'; ?>
   </body>

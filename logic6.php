@@ -192,7 +192,7 @@ class Form {
     $filename = uniqid() . '.doc';
   
     // Define the document content.
-    $doc_content = "Name: $this->first $this->last \nEmail: $this->email\nPhone: $this->phone\nMarks:\n Subject | Marks\n";
+    $doc_content = "Name: $this->first $this->last <br>Email: $this->email<br>Phone: $this->phone<br>Marks:<br> Subject | Marks<br>";
   
     // Split the subject and marks using the splitMarks method.
     $subject_mark = $this->splitMarks();
